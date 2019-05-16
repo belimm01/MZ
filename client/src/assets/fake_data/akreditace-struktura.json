@@ -1,0 +1,61 @@
+[
+  {
+    "info": {
+      "requestId" : "requestedId",
+      "timestamp" : 535153513,
+      "fee" : 1000,
+      "folderName": "Fakultni_nemocnice_Motol-21.5.2019_1415"
+    },
+    "form": [
+      {"groupName": "\u017d\u00e1dost o akreditaci",
+      "items": [
+        {
+          "id": "zadost-o-akreditaci",
+          "label": "\u017d\u00e1dost o akreditaci",
+          "maxSize": 1024,
+          "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
+          "required": true,
+          "acceptedFormats": [
+            "pdf",
+            "docx",
+            "doc"
+          ],
+          "tags": [
+            "zadost",
+            "akreditace"
+          ],
+          "multiple": false
+        },
+        {
+          "id": "vzdelavaci-plan",
+          "label": "Vzd\u011bl\u00e1vac\u00ed pl\u00e1n",
+          "maxSize": 2048,
+          "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
+          "required": true,
+          "multiple": true
+        }
+      ]
+    },
+      {
+        "groupName": "\u017divotopisy l\u00e9ka\u0159\u016f",
+        "items": [
+          {
+            "id": "zivotopis-fd65fd3",
+            "label": "\u017divotopis: MUDr. Jan Nov\u00e1k",
+            "tags": [
+              "zivotopis"
+            ],
+            "multiple": 2
+          },
+          {
+            "id": "zivotopis-tu9zjhz3",
+            "label": "\u017divotopis: MUDr. Jan Svoboda",
+            "tags": [
+              "zivotopis"
+            ],
+            "multiple": 2
+          }
+        ]
+      }]
+  }
+]
