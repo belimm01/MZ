@@ -3,26 +3,23 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-export const store = new Vuex.Store({
+const store = new Vuex.Store({
     state: {
         fileContent: '',
         fileName: '',
         jsonContent : '',
     },
     mutations: {
-        changeFileContent(state, fileContent) {
-            state.fileContent = fileContent
+        changeFileContent(ctx, fileContent) {
+            ctx.fileContent = fileContent
         },
-        changeFileName(state, fileName) {
-            state.fileName = fileName
+        changeFileName(ctx, fileName) {
+            ctx.fileName = fileName
         },
-        changeInputJsonContent(state, jsonContent) {
-            state.jsonContent = jsonContent
+        changeInputJsonContent(ctx, jsonContent) {
+            ctx.jsonContent = jsonContent
         }
     },
-    getters: {
-        fileContent: state => state.fileContent,
-        fileName: state => state.fileName,
-        jsonContent: state => state.jsonContent,
-    }
 });
+
+export default store
