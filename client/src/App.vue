@@ -61,7 +61,6 @@
                         acceptFormats: null,
                         tags: null,
                         multiple: false,
-                        info: null,
                     }]
                 }]
             }
@@ -92,13 +91,18 @@
                 for (let i = 0; i < json.form.length; i++) {
                     this.forms[i].groupName = json.form[i].groupName;
                     for (let z = 0; z < json.form[i].items.length; i++) {
-                        this.forms[i].items[z].label = json.form[i].items[z].label;
-                        this.forms[i].items[z].maxSize = json.form[i].items[z].maxSize;
-                        this.forms[i].items[z].description = json.form[i].items[z].description;
-                        this.forms[i].items[z].required = json.form[i].items[z].required;
-                        this.forms[i].items[z].acceptFormats = json.form[i].items[z].acceptFormats;
-                        this.forms[i].items[z].tags = json.form[i].items[z].tags;
-                        this.forms[i].items[z].multiple = json.form[i].items[z].multiple;
+                        let items = {
+                            label: json.form[i].items[z].label,
+                            maxSize: json.form[i].items[z].maxSize,
+                            description: json.form[i].items[z].description,
+                            required: json.form[i].items[z].required,
+                            acceptFormats: json.form[i].items[z].acceptFormats,
+                            tags: json.form[i].items[z].tags,
+                            multiple: json.form[i].items[z].multiple,
+                        };
+
+                        this.items.push(items);
+                        this.forms.push(this.items);
                     }
                 }
             },
