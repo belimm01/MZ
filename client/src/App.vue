@@ -8,23 +8,25 @@
                 </div>
             </div>
             <br>
+        </div>
+        <div v-for="form in forms">
             <div class="row">
                 <div class="col-sm">
-                    <h3 v-for="form in forms">{{form.groupName}}</h3>
+                    <h3 >{{form.groupName}}</h3>
                 </div>
                 <br>
             </div>
+            <Upload
+                    v-for="item in form.items"
+                    :label="item.label"
+                    :maxSize="item.maxSize"
+                    :description="item.description"
+                    :required="item.required"
+                    :acceptFormats="item.acceptFormats"
+                    :tags="item.tags"
+                    :multiple="item.multiple"
+            />
         </div>
-        <Upload
-                v-for="item in forms.items"
-                :label="item.label"
-                :maxSize="item.maxSize"
-                :description="item.description"
-                :required="item.required"
-                :acceptFormats="item.acceptFormats"
-                :tags="item.tags"
-                :multiple="item.multiple"
-        />
         <div class="row">
             <div class="col-sm">
                 <b-button type="submit" variant="primary" @click="uploadFile">Save</b-button>
@@ -51,18 +53,7 @@
                     fee: null,
                     folderName: null
                 },
-                forms: [{
-                    groupName: null,
-                    items: [{
-                        label: null,
-                        maxSize: null,
-                        description: null,
-                        required: false,
-                        acceptFormats: null,
-                        tags: null,
-                        multiple: false,
-                    }]
-                }]
+                forms: []
             }
         },
         name: 'app',
@@ -88,10 +79,12 @@
                 this.parseJson(res.data[0]);
             },
             parseJson(json) {
+                let formsArray = [];
                 for (let i = 0; i < json.form.length; i++) {
-                    this.forms[i].groupName = json.form[i].groupName;
-                    for (let z = 0; z < json.form[i].items.length; i++) {
-                        let items = {
+                    let form = [];
+                    let items = [];
+                    for (let z = 0; z < json.form[i].items.length; z++) {
+                        let item = {
                             label: json.form[i].items[z].label,
                             maxSize: json.form[i].items[z].maxSize,
                             description: json.form[i].items[z].description,
@@ -100,11 +93,14 @@
                             tags: json.form[i].items[z].tags,
                             multiple: json.form[i].items[z].multiple,
                         };
-
-                        this.items.push(items);
-                        this.forms.push(this.items);
+                        items.push(item);
                     }
+                    form.groupName = json.form[i].groupName;
+                    form.items = items;
+                    formsArray.push(form);
                 }
+                this.forms = formsArray;
+                console.log( this.forms);
             },
             uploadFile() {
                 let fileName = this.$store.getters.fileName;
