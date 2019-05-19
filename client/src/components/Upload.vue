@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-6 text-right">
-                {{required}}{{label}}
+            <div class="col-6 text-right" :aria-required="required">
+              {{label}}
             </div>
             <div class="col-4">
                 <b-form-file v-model="form.file" plain
@@ -36,7 +36,6 @@
                 form: {
                     file: null,
                 },
-                // show: true
             }
         },
         props: {
@@ -47,7 +46,6 @@
             acceptFormats: Array,
             tags: Array,
             multiple: Boolean,
-            info: Object,
         },
         components: {
             'b-form-file': BFormFile,

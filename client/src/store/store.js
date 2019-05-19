@@ -7,7 +7,8 @@ const store = new Vuex.Store({
     state: {
         fileContent: '',
         fileName: '',
-        jsonContent : '',
+        jsonContent: '',
+        info: '',
     },
     mutations: {
         changeFileContent(ctx, fileContent) {
@@ -16,8 +17,11 @@ const store = new Vuex.Store({
         changeFileName(ctx, fileName) {
             ctx.fileName = fileName
         },
-        changeInputJsonContent(ctx, jsonContent) {
+        changeInputJson(ctx, jsonContent) {
             ctx.jsonContent = jsonContent
+        },
+        changeInputJsonInfo(ctx, info) {
+            ctx.jsonContent = info
         }
     },
 });
