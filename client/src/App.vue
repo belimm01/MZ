@@ -12,26 +12,29 @@
         <div v-for="form in forms">
             <div class="row">
                 <div class="col-sm">
-                    <h3 >{{form.groupName}}</h3>
+                    <h3>{{form.groupName}}</h3>
                 </div>
                 <br>
             </div>
-            <Upload
-                    v-for="item in form.items"
-                    :label="item.label"
-                    :maxSize="item.maxSize"
-                    :description="item.description"
-                    :required="item.required"
-                    :acceptFormats="item.acceptFormats"
-                    :tags="item.tags"
-                    :multiple="item.multiple"
-            />
+            <div v-for="(item,index) in form.items">
+                <Upload v-bind:key="index"
+                        :label="item.label"
+                        :maxSize="item.maxSize"
+                        :description="item.description"
+                        :required="item.required"
+                        :acceptFormats="item.acceptFormats"
+                        :tags="item.tags"
+                        :multiple="item.multiple"
+                        @getFileArray="getFileFromChildComponent"
+                />
+            </div>
         </div>
         <div class="row">
             <div class="col-sm">
                 <b-button type="submit" variant="primary" @click="uploadFile">Save</b-button>
             </div>
         </div>
+        <b-modal v-model="modalShow">Dekujeme za vyuzivani nasiho portalu !</b-modal>
     </div>
 </template>
 
@@ -41,6 +44,7 @@
     import Button from 'bootstrap-vue/es/components/button/button';
     import axios from 'axios'
     import owncloud from 'js-owncloud-client';
+    import {BModal} from 'bootstrap-vue/es/components'
 
     const oc = new owncloud('http://localhost/');
 
@@ -53,7 +57,9 @@
                     fee: null,
                     folderName: null
                 },
-                forms: []
+                forms: [],
+                files: [],
+                modalShow: false
             }
         },
         name: 'app',
@@ -61,6 +67,7 @@
             Header,
             Upload,
             'b-button': Button,
+            'b-modal': BModal
         },
         created() {
             this.login();
@@ -89,7 +96,7 @@
                             maxSize: json.form[i].items[z].maxSize,
                             description: json.form[i].items[z].description,
                             required: json.form[i].items[z].required,
-                            acceptFormats: json.form[i].items[z].acceptFormats,
+                            acceptFormats: json.form[i].items[z].acceptedFormats,
                             tags: json.form[i].items[z].tags,
                             multiple: json.form[i].items[z].multiple,
                         };
@@ -100,16 +107,17 @@
                     formsArray.push(form);
                 }
                 this.forms = formsArray;
-                console.log( this.forms);
             },
-            uploadFile() {
-                let fileName = this.$store.getters.fileName;
-                let content = this.$store.getters.fileContent;
-                oc.files.putFileContents('Data/' + fileName, content).then(files => {
-                    console.log(files);
-                }).catch(error => {
-                    console.log(error);
-                });
+            async uploadFile() {
+                let folderName = "Documents/" + this.$store.getters.info.folderName + "/";
+                await oc.files.mkdir(folderName);
+                for (let i = 0; i < this.files.length; i++) {
+                    await oc.files.putFileContents(folderName + this.files[i].fileName, this.files[i].fileContent);
+                }
+                this.modalShow = true;
+            },
+            getFileFromChildComponent(value) {
+                this.files.push(value);
             },
         }
     }

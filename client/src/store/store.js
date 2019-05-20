@@ -21,9 +21,15 @@ const store = new Vuex.Store({
             ctx.jsonContent = jsonContent
         },
         changeInputJsonInfo(ctx, info) {
-            ctx.jsonContent = info
+            ctx.info = info
         }
     },
+    getters: {
+        fileContent: state => state.fileContent,
+        fileName: state => state.fileName,
+        jsonContent: state => state.jsonContent,
+        info: state => state.info,
+    }
 });
 
 export default store

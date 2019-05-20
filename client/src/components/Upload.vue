@@ -1,19 +1,15 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-6 text-right" :aria-required="required">
-              {{label}}
+            <div class="col-6 text-right" aria-required="required">
+                {{label}}
             </div>
             <div class="col-4">
-                <b-form-file v-model="form.file" plain
-                             class=""
-                             id="fileUploadControl"
-                             name="fileUploadControl"
-                             @change="setFilePath"
-                             :required="required"
-                             type="file"
-                             :accept="acceptFormats">
-                </b-form-file>
+                <input value="value"
+                       @change="addValue"
+                       :required="required"
+                       type="file"
+                       :accept="acceptFormats">
             </div>
             <div>
 
@@ -27,15 +23,11 @@
 </template>
 
 <script>
-    import BFormFile from 'bootstrap-vue/es/components/form-file/form-file'
-    import BForm from 'bootstrap-vue/es/components/form/form'
 
     export default {
         data() {
             return {
-                form: {
-                    file: null,
-                },
+                filesToUpload: []
             }
         },
         props: {
@@ -43,35 +35,31 @@
             maxSize: Number,
             description: String,
             required: Boolean,
-            acceptFormats: Array,
+            acceptFormats: String,
             tags: Array,
             multiple: Boolean,
         },
-        components: {
-            'b-form-file': BFormFile,
-            'b-form': BForm
-        },
         methods: {
-            setFilePath() {
-                let file = document.getElementById("fileUploadControl").files[0];
-                this.$store.commit("changeFileName", document.getElementById("fileUploadControl").files[0].name);
-                let fileContent;
+            addValue() {
+                let file = event.target.files[0];
+                let fileArray = [];
+                fileArray.fileName  = file.name;
                 if (file) {
                     let reader = new FileReader();
                     reader.readAsText(file, "UTF-8");
                     reader.onload = (evt) => {
-                        fileContent = evt.target.result;
+                        fileArray.fileContent = evt.target.result;
                     };
                     reader.onerror = (evt) => {
                         console.log('error ', evt);
                     };
                 }
-                this.$store.commit('changeFileContent', fileContent);
-            },
+                this.filesToUpload.push(fileArray)
+                this.$emit('getFileArray', fileArray);
+            }
         }
     }
 </script>
-
 <style>
     .required:before {
         content: "*";

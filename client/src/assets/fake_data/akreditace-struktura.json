@@ -15,11 +15,7 @@
           "maxSize": 1024,
           "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
           "required": true,
-          "acceptedFormats": [
-            "pdf",
-            "docx",
-            "doc"
-          ],
+          "acceptedFormats": ".doc,.pdf,.docx",
           "tags": [
             "zadost",
             "akreditace"
@@ -31,6 +27,7 @@
           "label": "Vzd\u011bl\u00e1vac\u00ed pl\u00e1n",
           "maxSize": 2048,
           "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
+          "acceptedFormats": ".doc,.pdf,.docx",
           "required": true,
           "multiple": true
         }
@@ -42,6 +39,8 @@
           {
             "id": "zivotopis-fd65fd3",
             "label": "\u017divotopis: MUDr. Jan Nov\u00e1k",
+            "acceptedFormats": "",
+            "required": false,
             "tags": [
               "zivotopis"
             ],
@@ -50,6 +49,8 @@
           {
             "id": "zivotopis-tu9zjhz3",
             "label": "\u017divotopis: MUDr. Jan Svoboda",
+            "acceptedFormats": ".doc,.pdf,.docx",
+            "required": false,
             "tags": [
               "zivotopis"
             ],
