@@ -18,14 +18,16 @@
             </div>
             <div v-for="(item,index) in form.items">
                 <Upload v-bind:key="index"
+                        :rel="item.label"
+                        :showLink="item.multiple"
                         :label="item.label"
                         :maxSize="item.maxSize"
                         :description="item.description"
                         :required="item.required"
                         :acceptFormats="item.acceptFormats"
                         :tags="item.tags"
-                        :multiple="item.multiple"
                         @getFileArray="getFileFromChildComponent"
+                        @isInput="addInput"
                 />
             </div>
         </div>
@@ -59,6 +61,8 @@
                 },
                 forms: [],
                 files: [],
+                inputs: [],
+                idLink: 0,
                 modalShow: false
             }
         },
@@ -100,6 +104,11 @@
                             tags: json.form[i].items[z].tags,
                             multiple: json.form[i].items[z].multiple,
                         };
+                        if (item.multiple === true) {
+                            item.multiple = 'block'
+                        } else {
+                            item.multiple = 'none'
+                        }
                         items.push(item);
                     }
                     form.groupName = json.form[i].groupName;
@@ -119,6 +128,25 @@
             getFileFromChildComponent(value) {
                 this.files.push(value);
             },
+            addInput(itemLabel) {
+                let item = {
+                    label: "",
+                    maxSize: 10000,
+                    description: "",
+                    required: false,
+                    acceptFormats: "",
+                    tags: [],
+                    multiple: true,
+                };
+                for (let i = 0; i < this.forms.length; i++) {
+                    for (let w = 0; w < this.forms[i].items.length; w++) {
+                        if (this.forms[i].items[w].label === itemLabel) {
+                            this.forms[i].push(this.forms[i].items.splice(++w, 0, item));
+                        }
+                    }
+                }
+                console.log(this.forms[0])
+            }
         }
     }
 </script>

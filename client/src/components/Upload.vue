@@ -10,12 +10,15 @@
                        :required="required"
                        type="file"
                        :accept="acceptFormats">
+                <div v-bind:style="{display: multiple}" >
+                    <a href="javascript:void(0);"
+                       :rel="rel"
+                       v-on:click="addChildInput($event)">
+                        pridat dalsi
+                    </a>
+                </div>
             </div>
-            <div>
 
-            </div>
-            <div class="col-4">
-            </div>
         </div>
         <br>
         <br>
@@ -27,7 +30,7 @@
     export default {
         data() {
             return {
-                filesToUpload: []
+                filesToUpload: [],
             }
         },
         props: {
@@ -37,13 +40,14 @@
             required: Boolean,
             acceptFormats: String,
             tags: Array,
-            multiple: Boolean,
+            multiple: String,
+            rel: String,
         },
         methods: {
             addValue() {
                 let file = event.target.files[0];
                 let fileArray = [];
-                fileArray.fileName  = file.name;
+                fileArray.fileName = file.name;
                 if (file) {
                     let reader = new FileReader();
                     reader.readAsText(file, "UTF-8");
@@ -54,8 +58,12 @@
                         console.log('error ', evt);
                     };
                 }
-                this.filesToUpload.push(fileArray)
+                this.filesToUpload.push(fileArray);
                 this.$emit('getFileArray', fileArray);
+            },
+            addChildInput(event) {
+                event.target.style.display = "none";
+                this.$emit('isInput', event.target.rel);
             }
         }
     }
