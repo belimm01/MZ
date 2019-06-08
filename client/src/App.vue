@@ -9,33 +9,35 @@
             </div>
             <br>
         </div>
-        <div v-for="form in forms">
+        <form @submit.prevent="uploadFile">
+            <div v-for="form in forms">
+                <div class="row">
+                    <div class="col-sm">
+                        <h3>{{form.groupName}}</h3>
+                    </div>
+                    <br>
+                </div>
+                <div v-for="(item,index) in form.items">
+                    <Upload v-bind:key="index"
+                            :rel="item.label"
+                            :multiple="item.multiple"
+                            :label="item.label"
+                            :maxSize="item.maxSize"
+                            :description="item.description"
+                            :required="item.required"
+                            :acceptFormats="item.acceptFormats"
+                            :tags="item.tags"
+                            @getFileContent="getFileFromChildComponent"
+                            @isInput="addInput"
+                    />
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm">
-                    <h3>{{form.groupName}}</h3>
+                    <b-button type="submit" variant="primary">Save</b-button>
                 </div>
-                <br>
             </div>
-            <div v-for="(item,index) in form.items">
-                <Upload v-bind:key="index"
-                        :rel="item.label"
-                        :showLink="item.multiple"
-                        :label="item.label"
-                        :maxSize="item.maxSize"
-                        :description="item.description"
-                        :required="item.required"
-                        :acceptFormats="item.acceptFormats"
-                        :tags="item.tags"
-                        @getFileArray="getFileFromChildComponent"
-                        @isInput="addInput"
-                />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <b-button type="submit" variant="primary" @click="uploadFile">Save</b-button>
-            </div>
-        </div>
+        </form>
         <b-modal v-model="modalShow">Dekujeme za vyuzivani nasiho portalu !</b-modal>
     </div>
 </template>
@@ -45,10 +47,10 @@
     import Header from "./components/Header"
     import Button from 'bootstrap-vue/es/components/button/button';
     import axios from 'axios'
-    import owncloud from 'js-owncloud-client';
     import {BModal} from 'bootstrap-vue/es/components'
-
-    const oc = new owncloud('http://localhost/');
+    import {validateJson} from './rules/ValidationRule'
+    import {defaultObject} from './statics/const'
+    import {isFolderExist, createFolder, uploadFiles, login} from './oc/owncloudService'
 
     export default {
         data() {
@@ -61,8 +63,6 @@
                 },
                 forms: [],
                 files: [],
-                inputs: [],
-                idLink: 0,
                 modalShow: false
             }
         },
@@ -86,7 +86,7 @@
                 const res = await axios.get("http://localhost:3000/api/v1.0/owncloud/");
                 this.$store.commit("changeInputJson", res.data[0]);
                 this.$store.commit("changeInputJsonInfo", res.data[0].info);
-                await oc.login('admin', 'admin');
+                await login();
                 this.parseJson(res.data[0]);
             },
             parseJson(json) {
@@ -95,21 +95,7 @@
                     let form = [];
                     let items = [];
                     for (let z = 0; z < json.form[i].items.length; z++) {
-                        let item = {
-                            label: json.form[i].items[z].label,
-                            maxSize: json.form[i].items[z].maxSize,
-                            description: json.form[i].items[z].description,
-                            required: json.form[i].items[z].required,
-                            acceptFormats: json.form[i].items[z].acceptedFormats,
-                            tags: json.form[i].items[z].tags,
-                            multiple: json.form[i].items[z].multiple,
-                        };
-                        if (item.multiple === true) {
-                            item.multiple = 'block'
-                        } else {
-                            item.multiple = 'none'
-                        }
-                        items.push(item);
+                        items.push(validateJson(json.form[i].items[z]));
                     }
                     form.groupName = json.form[i].groupName;
                     form.items = items;
@@ -118,34 +104,28 @@
                 this.forms = formsArray;
             },
             async uploadFile() {
-                let folderName = "Documents/" + this.$store.getters.info.folderName + "/";
-                await oc.files.mkdir(folderName);
-                for (let i = 0; i < this.files.length; i++) {
-                    await oc.files.putFileContents(folderName + this.files[i].fileName, this.files[i].fileContent);
+                const fileUploadList = this.files;
+                let folderName = "Documents/" + this.$store.getters.info.folderName + Date.now() + "/";
+                if (await isFolderExist(this.$store.getters.info.folderName)) {
+                    await createFolder(folderName);
                 }
-                this.modalShow = true;
+                if (fileUploadList !== undefined && fileUploadList !== null && fileUploadList.length > 0) {
+                    await uploadFiles(folderName, fileUploadList);
+                    this.modalShow = true;
+                }
             },
             getFileFromChildComponent(value) {
                 this.files.push(value);
             },
             addInput(itemLabel) {
-                let item = {
-                    label: "",
-                    maxSize: 10000,
-                    description: "",
-                    required: false,
-                    acceptFormats: "",
-                    tags: [],
-                    multiple: true,
-                };
+                const defaultJson = Object.assign({}, defaultObject, {});
                 for (let i = 0; i < this.forms.length; i++) {
                     for (let w = 0; w < this.forms[i].items.length; w++) {
                         if (this.forms[i].items[w].label === itemLabel) {
-                            this.forms[i].push(this.forms[i].items.splice(++w, 0, item));
+                            this.forms[i].push(this.forms[i].items.splice(++w, 0, defaultJson));
                         }
                     }
                 }
-                console.log(this.forms[0])
             }
         }
     }

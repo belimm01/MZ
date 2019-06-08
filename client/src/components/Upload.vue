@@ -1,37 +1,55 @@
 <template>
     <div>
-        <div class="row">
-            <div class="col-6 text-right" aria-required="required">
-                {{label}}
-            </div>
-            <div class="col-4">
-                <input value="value"
-                       @change="addValue"
-                       :required="required"
-                       type="file"
-                       :accept="acceptFormats">
-                <div v-bind:style="{display: multiple}" >
-                    <a href="javascript:void(0);"
-                       :rel="rel"
-                       v-on:click="addChildInput($event)">
-                        pridat dalsi
-                    </a>
+        <div v-if="required===true">
+            <div class="row">
+                <div class="col-6 text-right required">
+                    {{label}}
+                </div>
+                <div class="col-4">
+                    <input value="value"
+                           required
+                           @change="parseFile"
+                           type="file"
+                           :accept="acceptFormats">
+                    <div v-bind:style="{display: multiple}">
+                        <a href="javascript:void(0);"
+                           :rel="rel"
+                           v-on:click="addChildInput($event)">
+                            pridat dalsi
+                        </a>
+                    </div>
                 </div>
             </div>
-
         </div>
-        <br>
-        <br>
+        <div v-else>
+            <div class="row">
+                <div class="col-6 text-right">
+                    {{label}}
+                </div>
+                <div class="col-4">
+                    <input value="value"
+                           @change="parseFile"
+                           type="file"
+                           :accept="acceptFormats">
+                    <div v-bind:style="{display: multiple}">
+                        <a href="javascript:void(0);"
+                           :rel="rel"
+                           v-on:click="addChildInput($event)">
+                            pridat dalsi
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br>
+    <br>
     </div>
 </template>
 
 <script>
-
     export default {
         data() {
-            return {
-                filesToUpload: [],
-            }
+            return {}
         },
         props: {
             label: String,
@@ -44,22 +62,22 @@
             rel: String,
         },
         methods: {
-            addValue() {
+            parseFile() {
                 let file = event.target.files[0];
-                let fileArray = [];
-                fileArray.fileName = file.name;
+                let parseFile = [];
+                parseFile.fileName = file.name;
+                parseFile.required = this.required;
                 if (file) {
                     let reader = new FileReader();
                     reader.readAsText(file, "UTF-8");
                     reader.onload = (evt) => {
-                        fileArray.fileContent = evt.target.result;
+                        parseFile.fileContent = evt.target.result;
                     };
                     reader.onerror = (evt) => {
                         console.log('error ', evt);
                     };
                 }
-                this.filesToUpload.push(fileArray);
-                this.$emit('getFileArray', fileArray);
+                this.$emit('getFileContent', parseFile);
             },
             addChildInput(event) {
                 event.target.style.display = "none";
