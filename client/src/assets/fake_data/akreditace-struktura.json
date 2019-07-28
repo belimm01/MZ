@@ -2,36 +2,28 @@
   {
     "info": {
       "requestId" : "requestedId",
-      "timestamp" : 535153513,
       "fee" : 1000,
+      "email": "uzivatel@example.com",
+      "redirect": "/url-kam-budu-presmerovan",
       "folderName": "Fakultni_nemocnice_Motol-21.5.2019_1415"
     },
     "form": [
       {"groupName": "\u017d\u00e1dost o akreditaci",
-      "items": [
-        {
-          "id": "zadost-o-akreditaci",
-          "label": "\u017d\u00e1dost o akreditaci",
-          "maxSize": 1024,
-          "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
-          "required": true,
-          "acceptedFormats": ".doc,.pdf,.docx",
-          "tags": [
-            "zadost",
-            "akreditace"
-          ]
-        },
-        {
-          "id": "vzdelavaci-plan",
-          "label": "Vzd\u011bl\u00e1vac\u00ed pl\u00e1n",
-          "maxSize": 2048,
-          "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
-          "acceptedFormats": ".doc,.pdf,.docx",
-          "required": true,
-          "multiple": true
-        }
-      ]
-    },
+        "items": [
+          {
+            "id": "zadost-o-akreditaci"
+          },
+          {
+            "id": "vzdelavaci-plan",
+            "label": "Vzd\u011bl\u00e1vac\u00ed pl\u00e1n",
+            "maxSize": 2048,
+            "description": "Zde p\u0159ilo\u017ete \u017e\u00e1dost o akreditaci.",
+            "acceptedFormats": ".doc,.pdf,.docx",
+            "required": true,
+            "multiple": true
+          }
+        ]
+      },
       {
         "groupName": "\u017divotopisy l\u00e9ka\u0159\u016f",
         "items": [

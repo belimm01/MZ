@@ -44,13 +44,13 @@
 
 <script>
     import Upload from './components/Upload.vue'
-    import Header from "./components/Header"
+    import Header from "./components/TheHeader"
     import Button from 'bootstrap-vue/es/components/button/button';
     import axios from 'axios'
     import {BModal} from 'bootstrap-vue/es/components'
     import {validateJson} from './rules/ValidationRule'
     import {defaultObject} from './statics/const'
-    import {isFolderExist, createFolder, uploadFiles, login} from './oc/owncloudService'
+    import {isFolderExist, createFolder, uploadFiles, login} from './owncloud/owncloudService'
 
     export default {
         data() {
