@@ -47,5 +47,5 @@
 2. Project
   1. In project open server folder and run this command: `node app.js`
   2. In project open client folder and run this command: `npm run serve`
-3. Open postman and create PSOT request to `localhost:3000/api/v1.0/owncloud/` with sample json in the project *"client/src/assets/fake_data/akreditace-struktura.json"*
-4. Navigate to localhost:8080 and check the app. You can check result in localhost:80 in Document folder :) 
+3. Open postman and create POST request to `localhost:3000/accreditation` with sample json in the project *"client/src/assets/fake_data/akreditace-struktura.json"*
+4. Navigate to localhost:8080/?email=[accreditation_email] with email param and check the app. You can check result in localhost:80 in Document folder :) 
