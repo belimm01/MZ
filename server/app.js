@@ -1,6 +1,6 @@
 let express = require('express');
 let bodyParser = require('body-parser');
-let routes = require('./routes/routes.js');
+let routes = require('./controllers/AkreditaceController.js');
 let app = express();
 let cors = require('cors');
 

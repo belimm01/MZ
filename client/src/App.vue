@@ -83,11 +83,13 @@
         },
         methods: {
             async login() {
-                const res = await axios.get("http://localhost:3000/api/v1.0/owncloud/");
-                this.$store.commit("changeInputJson", res.data[0]);
-                this.$store.commit("changeInputJsonInfo", res.data[0].info);
+                let url = new URL(location.href);
+                let email = url.searchParams.get("email");
+                const res = await axios.get("http://localhost:3000/accreditation/?email=" + email);
+                this.$store.commit("changeInputJson", res.data);
+                this.$store.commit("changeInputJsonInfo", res.data.info);
                 await login();
-                this.parseJson(res.data[0]);
+                this.parseJson(res.data);
             },
             parseJson(json) {
                 let formsArray = [];
