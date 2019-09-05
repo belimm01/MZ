@@ -2,7 +2,7 @@ import owncloud from 'js-owncloud-client';
 
 const oc = new owncloud('http://localhost/');
 
-const isFolderExist = async (folderName) => {
+const isFolderNotExist = async (folderName) => {
     let fileList = await oc.files.list("Documents/");
     for (let i = 0; i < fileList.length; i++) {
         if (!fileList[i].name.includes("Documents/" + folderName)) {
@@ -26,4 +26,4 @@ const login = async () => {
     await oc.login('admin', 'admin');
 };
 
-export {isFolderExist, createFolder, uploadFiles, login}
+export {isFolderNotExist, createFolder, uploadFiles, login}
