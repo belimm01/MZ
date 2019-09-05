@@ -4,7 +4,7 @@
       "requestId" : "requestedId",
       "fee" : 1000,
       "email": "uzivatel@example.com",
-      "redirect": "/url-kam-budu-presmerovan"
+      "redirect": "/url-kam-budu-presmerovan",
       "folderName": "Fakultni_nemocnice_Motol-21.5.2019_1415"
     },
     "form": [
