@@ -5,7 +5,7 @@ let appRouter = (app) => {
     const mongoose = require('../mongodb/MongoConfig');
 
     process.env.MONGODB = DB_URL;
-    mongoose.connect(process.env.MONGODB);
+    mongoose.connect(process.env.MONGODB, {useNewUrlParser: true});
     mongoose.connection.on('error', function () {
         console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
         process.exit(1);

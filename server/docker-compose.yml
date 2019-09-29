@@ -1,0 +1,27 @@
+version: '3.2'
+
+services:
+
+  owncloud:
+    image: owncloud
+    deploy:
+      replicas: 1
+      labels:
+        com.docker.lb.hosts: server
+        com.docker.lb.network: demo-network
+        com.docker.lb.port: 80:80
+        com.docker.lb.ssl_cert: app.ssl_cert
+        com.docker.lb.ssl_key: app.ssl_key
+    environment:
+      METADATA: proxy-handles-tls
+      networks:
+        demo-network
+
+networks:
+  demo-network:
+    driver: overlay
+secrets:
+  app.ssl_cert:
+    file: ./cert/server.cert
+  app.ssl_key:
+    file: ./cert/server.key
