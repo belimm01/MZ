@@ -64,7 +64,7 @@
     import Header from "./components/TheHeader"
     import Button from 'bootstrap-vue/es/components/button/button';
     import axios from 'axios'
-    import {BModal} from 'bootstrap-vue/es/components'
+    import Modal from 'bootstrap-vue/es/components/modal/modal'
     import {validateJson} from './rules/ValidationRule'
     import {defaultObject} from './statics/const'
     import {isFolderNotExist, createFolder, uploadFiles, login} from './owncloud/owncloudService'
@@ -91,7 +91,7 @@
             Header,
             Upload,
             'b-button': Button,
-            'b-modal': BModal
+            'b-modal': Modal
         },
         created() {
             this.login();

@@ -10,14 +10,14 @@
 </template>
 
 <script>
-    import BNavbar from 'bootstrap-vue/es/components/navbar/navbar';
-    import BNavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand';
+    import Navbar from 'bootstrap-vue/es/components/navbar/navbar';
+    import NavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand';
 
     export default {
         name: "Header",
         components: {
-            'b-navbar': BNavbar,
-            'b-navbar-brand': BNavbarBrand
+            'b-navbar': Navbar,
+            'b-navbar-brand': NavbarBrand
         }
     }
 </script>

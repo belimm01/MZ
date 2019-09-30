@@ -1,6 +1,6 @@
 import owncloud from 'js-owncloud-client';
 
-const oc = new owncloud('http://localhost/');
+const oc = new owncloud('http://localhost:80/');
 
 const isFolderNotExist = async (folderName) => {
     let fileList = await oc.files.list("Documents/");
