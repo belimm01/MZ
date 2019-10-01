@@ -13,34 +13,7 @@
 2. start container 
 3. open browser and navigate to *http://localhost:80/*
 4. create owncloud account with **login: _admin_ and password: _admin_**
-5. **Allow cors** to *localhost:8080*
-   1. in terminal run this command: `docker exec -it [CONTAINER_NAME] bash`
-   2. navigate to config dir: cd config
-   4. print config.php file with command: cat config.php and copy your credetials
-   3. run this command with your credentials: 
-   ```
-   echo  "<?php
-   " '$CONFIG' "= array (
-     'instanceid' => '',
-     'passwordsalt' => '',
-     'secret' => '',
-     'trusted_domains' => 
-     array (
-       0 => 'localhost',
-     ),
-     'cors.allowed-domains' => [
-       'http://localhost:8080',
-     ],
-     'datadirectory' => '/var/www/html/data',
-     'overwrite.cli.url' => 'http://localhost',
-     'dbtype' => '',
-     'version' => '',
-     'logtimezone' => 'UTC',
-     'installed' => true,
-   );" >> config.php
-      chmod 777 config.php
-   ```
-   then run `exit` and `docker restart [CONTAINER_NAME]`
+5. **Allow cors** to *localhost:8080* execute owncloud script in `server/owncloud.sh` path.
 
 **Start project:**
 1. Start owncloud docker container
@@ -48,4 +21,4 @@
   1. In project open server folder and run this command: `node app.js`
   2. In project open client folder and run this command: `npm run serve`
 3. Open postman and create POST request to `localhost:3000/accreditation` with sample json in the project *"client/src/assets/fake_data/akreditace-struktura.json"*
-4. Navigate to localhost:8080/?email=[accreditation_email] with email param and check the app. You can check result in localhost:80 in Document folder :) 
+4. Navigate to `http://localhost:8080/?email=uzivatel@example.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` with email and token params and check the app. You can check result in localhost:80 in Document folder :) 

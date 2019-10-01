@@ -8,30 +8,37 @@
                         <h1>Elektronická podatelna MZČR</h1>
                     </div>
                 </div>
-                <br>
                 <form @submit.prevent="uploadFile">
                     <div v-for="form in forms">
+                        <br>
                         <div class="row">
                             <div class="col-sm">
                                 <h3>{{form.groupName}}</h3>
                             </div>
-                            <br>
                         </div>
                         <div v-for="(item,index) in form.items">
-                            <Upload v-bind:key="index"
-                                    :rel="item.label"
-                                    :multiple="item.multiple"
-                                    :label="item.label"
-                                    :maxSize="item.maxSize"
-                                    :description="item.description"
-                                    :required="item.required"
-                                    :acceptFormats="item.acceptFormats"
-                                    :tags="item.tags"
-                                    @getFileContent="getFileFromChildComponent"
-                                    @isInput="addInput"
-                            />
+                            <div v-for="(upload) in item.uploads">
+                                <Upload v-bind:key="upload"
+                                        :rel="item.label"
+                                        :multiple="item.multiple"
+                                        :label="item.label"
+                                        :maxSize="item.maxSize"
+                                        :description="item.description"
+                                        :required="item.required"
+                                        :acceptFormats="item.acceptFormats"
+                                        :tags="item.tags"
+                                        @getFileContent="getFileFromChildComponent"
+                                />
+                            </div>
+                            <div class="text-right" v-bind:style="{display: multiple}">
+                                <a href="javascript:void(0);"
+                                   v-on:click="addChildInput(index)">
+                                    pridat dalsi
+                                </a>
+                            </div>
                         </div>
                     </div>
+                    <br>
                     <div class="row">
                         <div class="col-sm">
                             <b-button type="submit" variant="primary">Save</b-button>
@@ -66,7 +73,6 @@
     import axios from 'axios'
     import Modal from 'bootstrap-vue/es/components/modal/modal'
     import {validateJson} from './rules/ValidationRule'
-    import {defaultObject} from './statics/const'
     import {isFolderNotExist, createFolder, uploadFiles, login} from './owncloud/owncloudService'
 
     export default {
@@ -103,31 +109,43 @@
         },
         methods: {
             async login() {
-                let url = new URL(location.href);
-                let email = url.searchParams.get("email");
-                if (email.length > 0) {
-                    let res = await axios.get("http://localhost:3000/accreditation/?email=" + email);
-                    this.isIncorrectAPI = false;
-                    this.$store.commit("changeInputJson", res.data);
-                    this.$store.commit("changeInputJsonInfo", res.data.info);
-                    await login();
-                    this.parseJson(res.data);
+                const url = new URL(location.href);
+                const token = url.searchParams.get("token");
+                const email = url.searchParams.get("email");
+                if ((token !== "undefined" && email !== "undefined") && (token !== null && email !== null)) {
+                    if (token.length > 0 && email.length > 0) {
+                        const res = await axios.get("http://localhost:3000/accreditation/?email=" + email + "&token=" + token);
+                        this.isIncorrectAPI = false;
+                        this.$store.commit("changeInputJson", res.data);
+                        this.$store.commit("changeInputJsonInfo", res.data.info);
+                        await login();
+                        this.parseJson(res.data[0]);
+                    } else {
+                        console.log("incorrect url, please provide url with example: http://localhost:3000/accreditation/?token=blabalbala");
+                    }
+                } else {
+                    console.log("incorrect url, please provide url with example: http://localhost:3000/accreditation/?token=blabalbala");
                 }
             },
-            parseJson(json) {
+
+            parseJson(data) {
                 let formsArray = [];
-                for (let i = 0; i < json.form.length; i++) {
+                for (let i = 0; i < data.form.length; i++) {
                     let form = [];
                     let items = [];
-                    for (let z = 0; z < json.form[i].items.length; z++) {
-                        items.push(validateJson(json.form[i].items[z]));
+                    for (let z = 0; z < data.form[i].items.length; z++) {
+                        const item =validateJson(data.form[i].items[z]);
+                        item.uploads=[];
+                        item.uploads.push({});
+                        items.push(item);
                     }
-                    form.groupName = json.form[i].groupName;
+                    form.groupName = data.form[i].groupName;
                     form.items = items;
                     formsArray.push(form);
                 }
                 this.forms = formsArray;
             },
+
             async uploadFile() {
                 this.showModal = true;
                 this.showSpinner = true;
@@ -143,31 +161,22 @@
                     this.showModalContent = true;
                 }
             },
+
             getFileFromChildComponent(value) {
                 this.files.push(value);
             },
-            addInput(itemLabel) {
-                const defaultJson = Object.assign({}, defaultObject, {});
+
+            addChildInput(index){
                 for (let i = 0; i < this.forms.length; i++) {
-                    for (let w = 0; w < this.forms[i].items.length; w++) {
-                        if (this.forms[i].items[w].label === itemLabel) {
-                            this.forms[i].push(this.forms[i].items.splice(++w, 0, defaultJson));
-                        }
-                    }
+                    this.forms[i].items[index].uploads.push({});
                 }
+                this.$forceUpdate();
             }
         }
     }
 </script>
 
 <style>
-    .modal-center {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
-
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;

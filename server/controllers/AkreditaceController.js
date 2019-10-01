@@ -21,8 +21,7 @@ let appRouter = (app) => {
     });
 
     app.get('/accreditation', (req, res) => {
-        console.log(req.query.email);
-        Accreditation.findOne({"info.email": req.query.email})
+        Accreditation.find({"info.token": req.query.token, "info.email": req.query.email})
             .then((doc) => {
                 console.log(doc);
                 return res.status(200).send(doc);

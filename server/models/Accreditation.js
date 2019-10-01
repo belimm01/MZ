@@ -8,6 +8,7 @@ const accreditationSchema = mongoose.Schema({
         email: String,
         redirect: String,
         folderName: String,
+        token: String
     },
     form: []
 });

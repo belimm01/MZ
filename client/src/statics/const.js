@@ -5,5 +5,5 @@ export const defaultObject = {
     required: false,
     acceptedFormats: "",
     tags: [],
-    multiple: 'true',
+    multiple: 'block',
 };

@@ -1,48 +1,18 @@
 <template>
     <div>
-        <div v-if="required===true">
-            <div class="row">
-                <div class="col-6 text-right required">
-                    {{label}}
-                </div>
-                <div class="col-4">
-                    <input value="value"
-                           required
-                           @change="parseFile"
-                           type="file"
-                           :accept="acceptFormats">
-                    <div v-bind:style="{display: multiple}">
-                        <a href="javascript:void(0);"
-                           :rel="rel"
-                           v-on:click="addChildInput($event)">
-                            pridat dalsi
-                        </a>
-                    </div>
-                </div>
+        <div class="row">
+            <div v-bind:class="{'col-6 text-right' : true, 'required':required}">
+                {{label}}
+            </div>
+            <div class="col-4">
+                <input value="value"
+                       :required="required"
+                       @change="parseFile"
+                       type="file"
+                       :accept="acceptFormats">
+
             </div>
         </div>
-        <div v-else>
-            <div class="row">
-                <div class="col-6 text-right">
-                    {{label}}
-                </div>
-                <div class="col-4">
-                    <input value="value"
-                           @change="parseFile"
-                           type="file"
-                           :accept="acceptFormats">
-                    <div v-bind:style="{display: multiple}">
-                        <a href="javascript:void(0);"
-                           :rel="rel"
-                           v-on:click="addChildInput($event)">
-                            pridat dalsi
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <br>
-    <br>
     </div>
 </template>
 
@@ -79,10 +49,6 @@
                 }
                 this.$emit('getFileContent', parseFile);
             },
-            addChildInput(event) {
-                event.target.style.display = "none";
-                this.$emit('isInput', event.target.rel);
-            }
         }
     }
 </script>
