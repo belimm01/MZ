@@ -1,6 +1,6 @@
 let express = require('express');
 let bodyParser = require('body-parser');
-let routes = require('./controllers/AkreditaceController.js');
+let routes = require('./controllers/userAccreditationController.js');
 let app = express();
 let cors = require('cors');
 
@@ -10,6 +10,6 @@ app.use(cors());
 
 routes(app);
 
-let server = app.listen(3000, () => {
-    console.log("app running on port.", server.address().hostname + server.address().port);
+let server = app.listen(3000, "127.0.0.1", () => {
+    console.log("Server listening on port:%s", server.address().port);
 });

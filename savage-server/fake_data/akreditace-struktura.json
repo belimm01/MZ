@@ -1,15 +1,17 @@
 [
   {
     "info": {
-      "requestId" : "requestedId",
-      "fee" : 1000,
+      "name": "Jorshua Agastins",
+      "requestId": "requestedId",
+      "fee": 1000,
       "email": "uzivatel@example.com",
       "redirect": "/url-kam-budu-presmerovan",
       "folderName": "Fakultni_nemocnice_Motol-21.5.2019_1415",
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
     },
     "form": [
-      {"groupName": "\u017d\u00e1dost o akreditaci",
+      {
+        "groupName": "\u017d\u00e1dost o akreditaci",
         "items": [
           {
             "id": "zadost-o-akreditaci"
@@ -49,6 +51,12 @@
             "multiple": true
           }
         ]
-      }]
+      }
+    ],
+    "state": {
+      "mz": false,
+      "upload": false,
+      "payment": false
+    }
   }
 ]

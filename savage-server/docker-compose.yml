@@ -1,7 +1,6 @@
-version: '3.2'
+version: '3.7'
 
 services:
-
   owncloud:
     image: owncloud:10
     container_name: owncloud
