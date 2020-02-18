@@ -9,7 +9,7 @@
     "express": "4.16.4",
     "fs": "0.0.1-security",
     "https": "1.0.0",
-    "mongoose": "5.6.7",
+    "mongoose": "5.9.1",
     "nodemon": "1.19.1"
   },
   "scripts": {
