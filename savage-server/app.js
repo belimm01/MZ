@@ -10,6 +10,8 @@ app.use(cors());
 
 routes(app);
 
-let server = app.listen(3000, "127.0.0.1", () => {
+let server  = require('http').createServer(app);
+
+server = app.listen(3000, "127.0.0.1", () => {
     console.log("Server listening on port:%s", server.address().port);
 });
