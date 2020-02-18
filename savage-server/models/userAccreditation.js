@@ -2,7 +2,7 @@ const mongoose = require('../config/mongodb/mongoConfig');
 mongoose.set('debug', true);
 
 const userAccreditationSchema = mongoose.Schema({
-    userId: String,
+    correlationId: String,
     info: [],
     form: [],
     state: []

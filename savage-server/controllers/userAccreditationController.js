@@ -1,5 +1,5 @@
 let appRouter = (app) => {
-
+    const uuid = require("uuid/v4")
     const userAccreditation = require("../models/userAccreditation");
     const DB_URL = 'mongodb://admin:adminadmin1@ds149676.mlab.com:49676/mz';
     const mongoose = require('../config/mongodb/MongoConfig');
@@ -14,6 +14,7 @@ let appRouter = (app) => {
     //receive accreditation object from ....
     app.post('/userAccreditation', (req, res) => {
         let result = req.body[0];
+        result.correlationId = uuid(); //set correlationId for which userAccreditation form
         const newUserAccreditation = new userAccreditation(result);
         newUserAccreditation.save(err => {
             if (err) return res.status(500).send(err);
