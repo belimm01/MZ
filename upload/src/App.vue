@@ -114,7 +114,7 @@
                 const email = url.searchParams.get("email");
                 if ((token !== "undefined" && email !== "undefined") && (token !== null && email !== null)) {
                     if (token.length > 0 && email.length > 0) {
-                        const res = await axios.get("http://localhost:3000/accreditation/?email=" + email + "&token=" + token);
+                        const res = await axios.get("http://localhost:3000/userAccreditaion/?email=" + email + "&token=" + token);
                         this.isIncorrectAPI = false;
                         this.$store.commit("changeInputJson", res.data);
                         this.$store.commit("changeInputJsonInfo", res.data.info);
@@ -134,8 +134,8 @@
                     let form = [];
                     let items = [];
                     for (let z = 0; z < data.form[i].items.length; z++) {
-                        const item =validateJson(data.form[i].items[z]);
-                        item.uploads=[];
+                        const item = validateJson(data.form[i].items[z]);
+                        item.uploads = [];
                         item.uploads.push({});
                         items.push(item);
                     }
@@ -166,7 +166,7 @@
                 this.files.push(value);
             },
 
-            addChildInput(index){
+            addChildInput(index) {
                 for (let i = 0; i < this.forms.length; i++) {
                     this.forms[i].items[index].uploads.push({});
                 }

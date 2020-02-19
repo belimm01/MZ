@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "savage",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,16 +12,16 @@
     "bootstrap": "latest",
     "bootstrap-vue": "latest",
     "cls-bluebird": "latest",
-    "js-owncloud-client": "latest",
     "vue": "latest",
     "vue-resource": "latest",
+    "vue-router": "^3.1.5",
     "vuex": "latest"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "latest",
     "@vue/cli-plugin-eslint": "latest",
     "@vue/cli-service": "latest",
-    "babel-eslint": "1latest",
+    "babel-eslint": "latest",
     "eslint": "latest",
     "eslint-plugin-vue": "latest",
     "vue-template-compiler": "latest"
