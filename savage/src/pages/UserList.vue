@@ -1,6 +1,5 @@
 <template>
-    <MyLayout id="userAccreditationInfo">
-        <div>UserList</div>
+    <MyLayout id="userList">
         <b-card>
             <ul id="list-user" class="list-group">
                 <li v-on:click="getUserInfo(user.correlationId)" class="list-group-item list-group-item-action"
@@ -8,7 +7,7 @@
                     v-bind:key="user.correlationId">
                     {{ user.info[0].name }}
                     <div class="float-right">
-                        <ActionButton :isHidden="isHidden"/>
+                        <ActionButton :isHidden="true"/>
                     </div>
                 </li>
             </ul>
@@ -26,11 +25,6 @@
         data() {
             return {
                 userList: null,
-                isHidden: {
-                    isHiddenUserInfo: true,
-                    isHiddenBackButton: true,
-                    isHiddenUserList: false,
-                }
             }
         },
         components: {
@@ -38,16 +32,17 @@
             'b-card': BCard,
         },
         async mounted() {
-            const res = await axios.get('http://localhost:3000/userAccreditationList');
-            this.userList = res.data;
+            const resUserList = await axios.get('http://localhost:3000/userAccreditationList');
+            this.userList = resUserList.data;
         },
         methods: {
-            getUserInfo(userCorrelationId) {
-                this.$router.push({
+            async getUserInfo(userCorrelationId) {
+                const userInfo = (await axios.get('http://localhost:3000/userAccreditation/id/' + userCorrelationId));
+                await this.$router.push({
                     name: 'userAccreditationInfo',
                     params: {
                         correlationId: userCorrelationId,
-                        isHidden: this.isHidden
+                        userInfo: userInfo.data[0]
                     }
                 })
             },

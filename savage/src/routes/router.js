@@ -14,8 +14,9 @@ export default new Router({
         },
         {
             name: 'userAccreditationInfo',
-            path: '/userAccreditationInfo',
+            path: '/userAccreditationInfo/:correlationId',
             component: UserAccreditationInfo,
+            props: true
         },
     ]
 });

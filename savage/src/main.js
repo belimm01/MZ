@@ -5,7 +5,6 @@ import router from "./routes/router";
 
 import '@/components/components'
 
-
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 

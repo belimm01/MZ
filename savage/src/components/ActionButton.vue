@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-button-group>
-            <b-button v-on:click="goBack" v-if="!isHidden.isHiddenBackButton" size="sm" variant="dark">
+            <b-button v-on:click="goBack" v-if="!isHidden" size="sm" variant="dark">
                 Back
             </b-button>
             <div class="divider"></div>
@@ -24,9 +24,6 @@
     export default {
         name: "ActionButton",
         props: ['isHidden'],
-        mounted() {
-            console.log('The props are also available in JS:', this.isHidden);
-        },
         components: {
             'b-button': BButton,
             'BIconPencil': BIconPencil,

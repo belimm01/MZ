@@ -3,6 +3,8 @@
         <div>
             <img alt="Logo" class="d-inline-block align-top" src="~@/assets/logo-mz.svg">
         </div>
+        <br>
+        <br>
         <nav class="navbar color-navbar justify-content-between">
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
