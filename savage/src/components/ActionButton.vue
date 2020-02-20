@@ -5,7 +5,11 @@
                 Back
             </b-button>
             <div class="divider"></div>
-            <b-button size="sm" variant="info">
+            <b-button v-on:click="getUserInfo" v-if="isHidden" size="sm" variant="success">
+                <BIconInfo></BIconInfo>
+            </b-button>
+            <div class="divider"></div>
+            <b-button v-on:click="editUserInfo" size="sm" variant="info">
                 <BIconPencil></BIconPencil>
             </b-button>
             <div class="divider"></div>
@@ -19,18 +23,37 @@
 <script>
 
     import {BButton} from "bootstrap-vue/esm";
-    import {BIconPencil, BIconTrashFill, BButtonGroup} from "bootstrap-vue";
+    import {BIconPencil, BIconTrashFill, BButtonGroup, BIconInfo} from "bootstrap-vue";
 
     export default {
         name: "ActionButton",
-        props: ['isHidden'],
+        props: ['isHidden', 'currentUser'],
         components: {
             'b-button': BButton,
             'BIconPencil': BIconPencil,
             'BIconTrashFill': BIconTrashFill,
             'b-button-group': BButtonGroup,
+            'BIconInfo': BIconInfo
         },
         methods: {
+            editUserInfo() {
+                this.$router.push({
+                    name: 'userAccreditationInfoForm',
+                    params: {
+                        correlationId: this.currentUser.correlationId,
+                        currentUser: this.currentUser
+                    }
+                })
+            },
+            getUserInfo() {
+                this.$router.push({
+                    name: 'userAccreditationInfo',
+                    params: {
+                        correlationId: this.currentUser.correlationId,
+                        currentUser: this.currentUser
+                    }
+                })
+            },
             goBack() {
                 window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
             }

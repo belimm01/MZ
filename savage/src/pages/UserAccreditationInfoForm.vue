@@ -1,31 +1,77 @@
-<!--<template>-->
-<!--    <div>-->
+<template>
+    <MyLayout id="userAccreditationInfo">
+        <div>
+            <b-card>
+                <b-card alt="User avatar" :img-src="require('../assets/user-icon.svg')" img-right>
+                    <b-card-text>
+                        <h1 class="text-center">User information</h1>
+                    </b-card-text>
+                    <b-form @submit="onSubmit" v-if="true">
+                        <b-container fluid>
+                            <div v-for="(value, name) in currentUser.info[0]" :value="value" :key="name">
+                                <b-row class="my-1">
+                                    <b-col sm="2">
+                                        <label><b>{{name}}:</b></label>
+                                    </b-col>
+                                    <b-col sm="6">
+                                        <b-form-group id="input-group-user-info">
+                                            <b-form-input
+                                                    @input="update(name,$event)"
+                                                    :value="value"
+                                                    :key="name"
+                                            ></b-form-input>
+                                        </b-form-group>
+                                    </b-col>
+                                </b-row>
+                            </div>
+                            <b-row class="my-1">
+                                <b-col sm="6">
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-button type="submit" variant="primary">Submit</b-button>
+                                </b-col>
+                            </b-row>
+                        </b-container>
+                    </b-form>
+                    <ActionButton :isHidden="false"/>
+                </b-card>
+            </b-card>
+        </div>
+    </MyLayout>
+</template>
 
-<!--    </div>-->
-<!--</template>-->
+<script>
+    import {BCard, BCol, BRow, BButton, BCardText, BContainer, BFormInput, BFormGroup, BForm} from "bootstrap-vue/esm";
+    import ActionButton from "../components/ActionButton";
 
-<!--<script>-->
-<!--    // import {BTable, BCard, BCardText} from "bootstrap-vue/esm";-->
-<!--    // import ActionButton from "./ActionButton";-->
-
-<!--    export default {-->
-<!--        name: "UserAccreditationInfoForm",-->
-<!--        data() {-->
-<!--            return {}-->
-<!--        },-->
-<!--        mounted: function () {-->
-
-<!--        },-->
-<!--        components: {-->
-<!--            // ActionButton,-->
-<!--            // 'b-card': BCard,-->
-<!--            // 'b-card-text': BCardText,-->
-<!--            // 'b-table': BTable,-->
-<!--        },-->
-<!--        methods: {-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
-
-<!--<style scoped>-->
-<!--</style>-->
+    export default {
+        name: "UserAccreditationInfoForm",
+        data() {
+            return {
+                form: {}
+            }
+        },
+        props: ['currentUser'],
+        components: {
+            ActionButton,
+            'b-card': BCard,
+            'b-card-text': BCardText,
+            'b-form-group': BFormGroup,
+            'b-form': BForm,
+            'b-form-input': BFormInput,
+            'b-container': BContainer,
+            'b-col': BCol,
+            'b-row': BRow,
+            'b-button': BButton
+        },
+        methods: {
+            onSubmit(evt) {
+                evt.preventDefault();
+                console.log(JSON.stringify(this.currentUser.info[0]))
+            },
+            update(key, value) {
+                this.currentUser.info[0][key] = value;
+            },
+        }
+    }
+</script>

@@ -2,12 +2,12 @@
     <MyLayout id="userList">
         <b-card>
             <ul id="list-user" class="list-group">
-                <li v-on:click="getUserInfo(user.correlationId)" class="list-group-item list-group-item-action"
-                    v-for="user in userList"
-                    v-bind:key="user.correlationId">
-                    {{ user.info[0].name }}
+                <li class="list-group-item"
+                    v-for="currentUser in userList"
+                    v-bind:key="currentUser.correlationId">
+                    {{ currentUser.info[0].name }}
                     <div class="float-right">
-                        <ActionButton :isHidden="true"/>
+                        <ActionButton :currentUser="currentUser" :isHidden="true"/>
                     </div>
                 </li>
             </ul>
@@ -31,21 +31,9 @@
             ActionButton,
             'b-card': BCard,
         },
-        async mounted() {
+       async mounted() {
             const resUserList = await Api.getAllUsers();
             this.userList = resUserList.data;
         },
-        methods: {
-            async getUserInfo(userCorrelationId) {
-                const userInfo = await Api.getUserInfo(userCorrelationId);
-                await this.$router.push({
-                    name: 'userAccreditationInfo',
-                    params: {
-                        correlationId: userCorrelationId,
-                        userInfo: userInfo.data[0]
-                    }
-                })
-            },
-        }
     }
 </script>

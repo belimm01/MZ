@@ -5,9 +5,9 @@
                 <b-card alt="User avatar" :img-src="require('../assets/user-icon.svg')" img-right>
                     <b-card-text>
                         <h1 class="text-center">User information</h1>
-                        <b-table stacked :items="userInfo.info"></b-table>
+                        <b-table stacked :items="currentUser.info"></b-table>
                     </b-card-text>
-                    <ActionButton :isHidden="false"/>
+                    <ActionButton :currentUser="currentUser" :isHidden="false"/>
                 </b-card>
             </b-card>
         </div>
@@ -20,7 +20,7 @@
 
     export default {
         name: "UserAccreditationInfo",
-        props:['userInfo'],
+        props:['currentUser'],
         components: {
             ActionButton,
             'b-card': BCard,
