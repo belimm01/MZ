@@ -1,5 +1,6 @@
 <template>
-    <div id="userAccreditationInfo">
+    <MyLayout id="userAccreditationInfo">
+        <div>UserList</div>
         <b-card>
             <ul id="list-user" class="list-group">
                 <li v-on:click="getUserInfo(user.correlationId)" class="list-group-item list-group-item-action"
@@ -12,7 +13,7 @@
                 </li>
             </ul>
         </b-card>
-    </div>
+    </MyLayout>
 </template>
 
 <script>

@@ -1,21 +1,23 @@
 <template>
     <div>
+        <div>
+            <img alt="Logo" class="d-inline-block align-top" src="~@/assets/logo-mz.svg">
+        </div>
         <nav class="navbar color-navbar justify-content-between">
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn my-2 my-sm-0 color-button" type="submit">Search</button>
             </form>
         </nav>
+        <div>
+            <slot />
+        </div>
     </div>
+    
 </template>
 
 <script>
-
     export default {
-        name: "NavBar",
-        data() {
-            return {}
-        },
     }
 </script>
 

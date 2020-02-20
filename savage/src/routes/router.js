@@ -1,20 +1,21 @@
 import Vue from "vue";
 import Router from "vue-router";
+import UserList from '../pages/UserList'
+import UserAccreditationInfo from '../pages/UserAccreditationInfo'
 
 Vue.use(Router);
 
 export default new Router({
-    mode: "history",
     routes: [
         {
             name: 'userList',
             path: '/',
-            component: () => import("../pages/UserList").default // load sync home
+            component: UserList,
         },
         {
             name: 'userAccreditationInfo',
             path: '/userAccreditationInfo',
-            component: () => import("../pages/UserAccreditationInfo")
+            component: UserAccreditationInfo,
         },
     ]
 });
