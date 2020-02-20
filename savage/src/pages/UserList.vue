@@ -16,9 +16,9 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import {BCard} from "bootstrap-vue/esm";
     import ActionButton from "../components/ActionButton";
+    import Api from "../Api";
 
     export default {
         name: "UserList",
@@ -32,12 +32,12 @@
             'b-card': BCard,
         },
         async mounted() {
-            const resUserList = await axios.get('http://localhost:3000/userAccreditationList');
+            const resUserList = await Api.getAllUsers();
             this.userList = resUserList.data;
         },
         methods: {
             async getUserInfo(userCorrelationId) {
-                const userInfo = (await axios.get('http://localhost:3000/userAccreditation/id/' + userCorrelationId));
+                const userInfo = await Api.getUserInfo(userCorrelationId);
                 await this.$router.push({
                     name: 'userAccreditationInfo',
                     params: {

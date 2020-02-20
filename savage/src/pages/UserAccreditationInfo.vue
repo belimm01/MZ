@@ -27,9 +27,6 @@
             'b-card-text': BCardText,
             'b-table': BTable,
         },
-        mounted(){
-            console.log(this.$route, this.userInfo)
-        },
         methods: {}
     }
 </script>
