@@ -11,7 +11,7 @@ let appRouter = (app) => {
         process.exit(1);
     });
 
-    //receive accreditation object from ....
+    //receive accreditation object from MZ....
     app.post('/userAccreditation', (req, res) => {
         let result = req.body[0];
         result.correlationId = uuid(); //set correlationId for which userAccreditation form
@@ -34,28 +34,18 @@ let appRouter = (app) => {
     //         });
     // });
 
-    //find user by name
-    app.get('/userAccreditation/name/:name', (req, res) => {
-        userAccreditation.find({"info.name": req.params.name})
-            .then((doc) => {
-                console.log(doc);
-                return res.status(200).send(doc);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    //update user by id
+    app.put('/userAccreditation/id/:correlationId/edit', (req, res) => {
+        userAccreditation.findOneAndUpdate({"correlationId": req.params.correlationId}, req.body, function (err, place) {
+            res.send(place);
+        });
     });
 
-    //get all users
-    app.get('/userAccreditation/id/:correlationId', (req, res) => {
-        userAccreditation.find({"correlationId": req.params.correlationId})
-            .then((doc) => {
-                console.log(doc);
-                return res.status(200).send(doc);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    //delete user by id
+    app.delete('/userAccreditation/id/:correlationId', (req, res) => {
+        userAccreditation.findOneAndRemove({"correlationId": req.params.correlationId}, req.body, function (err, place) {
+            res.send(place);
+        });
     });
 
     //get all users
