@@ -9,11 +9,11 @@
                 <BIconInfo></BIconInfo>
             </b-button>
             <div class="divider"></div>
-            <b-button v-on:click="editUserInfo" size="sm" variant="info">
+            <b-button v-on:click="editUserInfo" v-if="isHidden" size="sm" variant="info">
                 <BIconPencil></BIconPencil>
             </b-button>
             <div class="divider"></div>
-            <b-button size="sm" variant="danger">
+            <b-button v-on:click="deleteUser" v-if="isHidden" size="sm" variant="danger">
                 <BIconTrashFill></BIconTrashFill>
             </b-button>
         </b-button-group>
@@ -24,6 +24,7 @@
 
     import {BButton} from "bootstrap-vue/esm";
     import {BIconPencil, BIconTrashFill, BButtonGroup, BIconInfo} from "bootstrap-vue";
+    import Api from "../Api";
 
     export default {
         name: "ActionButton",
@@ -44,6 +45,16 @@
                         currentUser: this.currentUser
                     }
                 })
+            },
+            async deleteUser() {
+                await Api.deleteUser(this.currentUser.correlationId);
+                if (this.$router.url === '/userList') {
+                    this.$router.go()
+                } else {
+                    this.$router.push({
+                        name: 'userList',
+                    })
+                }
             },
             getUserInfo() {
                 this.$router.push({

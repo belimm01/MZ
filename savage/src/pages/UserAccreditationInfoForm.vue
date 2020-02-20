@@ -43,14 +43,10 @@
 <script>
     import {BCard, BCol, BRow, BButton, BCardText, BContainer, BFormInput, BFormGroup, BForm} from "bootstrap-vue/esm";
     import ActionButton from "../components/ActionButton";
+    import Api from '../Api'
 
     export default {
         name: "UserAccreditationInfoForm",
-        data() {
-            return {
-                form: {}
-            }
-        },
         props: ['currentUser'],
         components: {
             ActionButton,
@@ -65,9 +61,16 @@
             'b-button': BButton
         },
         methods: {
-            onSubmit(evt) {
+            async onSubmit(evt) {
                 evt.preventDefault();
-                console.log(JSON.stringify(this.currentUser.info[0]))
+                await Api.updateUserInfo(this.currentUser);
+                this.$router.push({
+                    name: 'userAccreditationInfo',
+                    params: {
+                        correlationId: this.currentUser.correlationId,
+                        currentUser: this.currentUser
+                    }
+                })
             },
             update(key, value) {
                 this.currentUser.info[0][key] = value;

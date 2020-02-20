@@ -7,6 +7,14 @@ export default {
         return axios.get('/userAccreditation/id/' + userCorrelationId);
     },
 
+    updateUserInfo(currentUser) {
+        return axios.put('/userAccreditation/id/' + currentUser.correlationId + '/edit', currentUser);
+    },
+
+    deleteUser(userCorrelationId) {
+        return axios.delete('/userAccreditation/id/' + userCorrelationId);
+    },
+
     getAllUsers() {
         return axios.get("/userAccreditationList");
     },
