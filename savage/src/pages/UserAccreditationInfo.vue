@@ -29,7 +29,6 @@
             'b-card': BCard,
             'b-card-text': BCardText,
             'b-table': BTable,
-        },
-        methods: {}
+        }
     }
 </script>

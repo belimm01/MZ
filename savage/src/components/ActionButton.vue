@@ -1,20 +1,28 @@
 <template>
     <div>
         <b-button-group>
-            <b-button v-on:click="goBack" v-if="!isHidden" size="sm" variant="dark">
-                Back
+            <b-button v-on:click="goHome" v-if="!isHidden" size="sm" variant="dark">
+                Home
             </b-button>
             <div class="divider"></div>
             <b-button v-on:click="getUserInfo" v-if="isHidden" size="sm" variant="success">
                 <BIconInfo></BIconInfo>
+                Info
             </b-button>
             <div class="divider"></div>
             <b-button v-on:click="editUserInfo" v-if="isHidden" size="sm" variant="info">
                 <BIconPencil></BIconPencil>
+                Edit info
+            </b-button>
+            <div class="divider"></div>
+            <b-button v-on:click="editUserState" v-if="isHidden" size="sm" variant="info">
+                <BIconPencil></BIconPencil>
+                Edit process
             </b-button>
             <div class="divider"></div>
             <b-button v-on:click="deleteUser" v-if="isHidden" size="sm" variant="danger">
                 <BIconTrashFill></BIconTrashFill>
+                Delete
             </b-button>
         </b-button-group>
     </div>
@@ -65,8 +73,19 @@
                     }
                 })
             },
-            goBack() {
-                window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+            editUserState() {
+                this.$router.push({
+                    name: 'userAccreditationProcessForm',
+                    params: {
+                        correlationId: this.currentUser.correlationId,
+                        currentUser: this.currentUser
+                    }
+                })
+            },
+            goHome() {
+                this.$router.push({
+                    name: 'userList',
+                })
             }
         }
     }
