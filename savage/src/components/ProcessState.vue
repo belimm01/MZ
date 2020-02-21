@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import {BButton, BCard, BCollapse} from "bootstrap-vue/esm";
+    import {BButton, BCard, BCollapse, VBToggle} from "bootstrap-vue/esm";
 
     export default {
         name: "ProcessState",
@@ -23,6 +23,9 @@
             'b-button': BButton,
             'b-collapse': BCollapse,
             'b-card': BCard,
+        },
+        directives: {
+          'b-toggle': VBToggle,
         },
         methods: {}
     }
