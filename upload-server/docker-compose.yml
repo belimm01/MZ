@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  owncloud:
+    image: owncloud:10
+    container_name: owncloud-mz
+    hostname: owncloud
+    ports:
+      - 80:80
+    networks:
+      internal_mz:
+        aliases:
+          - "owncloud.docker"
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-mz
+    hostname: broker
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      internal_mz:
+        aliases:
+          - "broker.docker"
+networks:
+  internal_mz:
+    external:
+      name: internal_mz
