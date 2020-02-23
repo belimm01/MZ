@@ -56,8 +56,8 @@
             },
             async deleteUser() {
                 await Api.deleteUser(this.currentUser.correlationId);
-                if (this.$router.url === '/userList') {
-                    this.$router.go()
+                if (this.$router.url === '/userList' || this.$router.url === undefined) {
+                    this.$router.go();
                 } else {
                     this.$router.push({
                         name: 'userList',

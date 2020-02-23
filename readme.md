@@ -18,7 +18,14 @@
 **Start project:**
 1. Start owncloud docker container
 2. Project
-  1. In project open server folder and run this command: `node app.js`
+  1. In project open server folder and run this command: `node producer.js`
   2. In project open client folder and run this command: `npm i` then `npm run serve`
 3. Open postman and create POST request to `localhost:3000/accreditation` with sample json in the project *"client/src/assets/fake_data/akreditace-struktura.json"*
 4. Navigate to `http://localhost:8080/?email=uzivatel@example.com&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` with email and token params and check the app. You can check result in localhost:80 in Document folder :) 
+
+**Init internal network**
+`docker network create internal_mz`
+    
+**RabbitMq docker:**
+Rabbit web UI - `http://localhost:15672`
+Default username and password of `guest/guest`

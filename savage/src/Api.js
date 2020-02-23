@@ -8,7 +8,7 @@ export default {
     },
 
     updateUserInfo(currentUser) {
-        return axios.put('/userAccreditation/id/' + currentUser.correlationId + '/edit', currentUser);
+        return axios.put('/userAccreditation/id/' + currentUser.correlationId, currentUser);
     },
 
     deleteUser(userCorrelationId) {

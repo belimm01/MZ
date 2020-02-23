@@ -1,8 +1,7 @@
 let appRouter = (app) => {
-    const uuid = require("uuid/v4")
-    const userAccreditation = require("../models/userAccreditation");
     const DB_URL = 'mongodb://admin:adminadmin1@ds149676.mlab.com:49676/mz';
-    const mongoose = require('../config/mongodb/MongoConfig');
+    const mongoose = require('../config/mongodb/mongoConfig');
+    const userAccreditationService = require( "../services/userAccreditationService");
 
     process.env.MONGODB = DB_URL;
     mongoose.connect(process.env.MONGODB, {useNewUrlParser: true});
@@ -12,52 +11,31 @@ let appRouter = (app) => {
     });
 
     //receive accreditation object from MZ....
-    app.post('/userAccreditation', (req, res) => {
-        let result = req.body[0];
-        result.correlationId = uuid(); //set correlationId for which userAccreditation form
-        const newUserAccreditation = new userAccreditation(result);
-        newUserAccreditation.save(err => {
-            if (err) return res.status(500).send(err);
-            return res.status(200).send(newUserAccreditation);
-        });
+    app.post('/userAccreditation', async (req, res) => {
+        await userAccreditationService.createNewUser(req);
+        res.status(200);
     });
 
-    //
-    // app.get('/userAccreditation/:token/:email', (req, res) => {
-    //     userAccreditation.find({"info.token": req.params.token, "info.email": req.params.email})
-    //         .then((doc) => {
-    //             console.log(doc);
-    //             return res.status(200).send(doc);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // });
-
     //update user by id
-    app.put('/userAccreditation/id/:correlationId/edit', (req, res) => {
-        userAccreditation.findOneAndUpdate({"correlationId": req.params.correlationId}, req.body, function (err, place) {
-            res.send(place);
-        });
+    app.put('/userAccreditation/id/:correlationId', async (req, res) => {
+        const body = req.body;
+        const correlationId = req.params.correlationId;
+        const result = await userAccreditationService.findUserByCorrelationIdAndUpdate(correlationId, body);
+        res.status(200).send(result);
     });
 
     //delete user by id
-    app.delete('/userAccreditation/id/:correlationId', (req, res) => {
-        userAccreditation.findOneAndRemove({"correlationId": req.params.correlationId}, req.body, function (err, place) {
-            res.send(place);
-        });
+    app.delete('/userAccreditation/id/:correlationId', async (req, res) => {
+        const body = req.body;
+        const correlationId = req.params.correlationId;
+        const result = await userAccreditationService.deleteUserByCorrelationId(correlationId, body);
+        res.status(200).send(result);
     });
 
     //get all users
-    app.get('/userAccreditationList', (req, res) => {
-        userAccreditation.find({})
-            .then((doc) => {
-                console.log(doc);
-                return res.status(200).send(doc);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    app.get('/userAccreditationList', async (req, res) => {
+        const result = await userAccreditationService.getAllUsers();
+        res.status(200).send(result);
     });
 };
 
