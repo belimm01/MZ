@@ -17,7 +17,7 @@ const createClient = () => amqp.connect('amqp://localhost')
         return channel;
     });
 
-const sendRPCMessage = (channel, message, userAccreditationQueue) => new Promise(resolve => {
+const sendUserAccreditationMessage = (channel, message, userAccreditationQueue) => new Promise(resolve => {
     // unique random string
     const correlationId = message.correlationId;
     channel.responseEmitter.once(correlationId, resolve);
@@ -27,4 +27,4 @@ const sendRPCMessage = (channel, message, userAccreditationQueue) => new Promise
 });
 
 module.exports.createClient = createClient;
-module.exports.sendRPCMessage = sendRPCMessage;
+module.exports.sendUserAccreditationMessage = sendUserAccreditationMessage;
