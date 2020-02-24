@@ -55,15 +55,8 @@
                 })
             },
             async deleteUser() {
-                console.log(this.currentUser.info[0].name);
                 await Api.deleteUser(this.currentUser.correlationId);
-                if (this.$router.url === '/userList' || this.$router.url === undefined) {
-                    this.$router.go();
-                } else {
-                    this.$router.push({
-                        name: 'userList',
-                    })
-                }
+                this.$router.go();
             },
             getUserInfo() {
                 this.$router.push({
