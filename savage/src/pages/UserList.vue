@@ -4,8 +4,8 @@
             <b-list-group id="list-user"
                           :per-page="perPage"
                           :current-page="currentPage">
-                <b-list-group-item v-for="currentUser in userList"
-                                   v-bind:key="currentUser.correlationId">
+                <b-list-group-item v-for="currentUser in filteredUserList"
+                                   :key="currentUser.correlationId">
                     {{ currentUser.info[0].name }}
                     <div class="float-right">
                         <ActionButton :key="currentUser.correlationId"
@@ -37,7 +37,6 @@
                 userList: null,
                 perPage: 5,
                 currentPage: 1,
-                rows: null
             }
         },
         components: {
@@ -50,7 +49,18 @@
         async mounted() {
             const resUserList = await Api.getAllUsers();
             this.userList = resUserList.data;
-            this.rows = resUserList.length
         },
+        computed: {
+            filteredUserList() {
+                // Display only needed page
+                return this.userList.slice(
+                    (this.currentPage - 1) * this.perPage,
+                    this.currentPage * this.perPage
+                )
+            },
+            rows() {
+                return this.userList.length
+            }
+        }
     }
 </script>
