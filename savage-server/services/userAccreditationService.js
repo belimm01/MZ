@@ -14,9 +14,8 @@ module.exports = {
     findUserByCorrelationIdAndUpdate: function (correlationId, body) {
         return userAccreditation.findOneAndUpdate({"correlationId": correlationId}, body);
     },
-    findUserByCorrelationId: function (correlationId) {
-        return userAccreditation.findOne({"correlationId": correlationId}).then(function (userAccreditation) {
-            console.log(userAccreditation)
+    findUserByCorrelationId: function (correlationId, token) {
+        return userAccreditation.findOne({"correlationId": correlationId, "info.token": token}).then(function (userAccreditation) {
             return userAccreditation;
         })
             .catch(function (err) {
@@ -34,7 +33,7 @@ module.exports = {
         })
             .catch(function(err) {
                 console.log(err);
-            });;
+            });
     },
     getAllUsers: function () {
         return userAccreditation.find({});

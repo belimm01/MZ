@@ -4,6 +4,5 @@ export const defaultObject = {
     description: "",
     required: false,
     acceptedFormats: "",
-    tags: [],
-    multiple: 'block',
+    tags: []
 };

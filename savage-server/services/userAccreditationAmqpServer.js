@@ -1,28 +1,42 @@
 const amqp = require('amqplib');
 const userAccreditationService = require("./userAccreditationService");
 
-const queue = 'direct_accreditation';
+const queueAccreditation = 'direct_accreditation';
 
 amqp.connect('amqp://localhost')
     .then(connection => {
         return connection.createChannel();
     })
     .then(channel => {
-        channel.assertQueue(queue, {durable: false});
+        channel.assertQueue(queueAccreditation, {durable: false});
         channel.prefetch(1);
         console.log(" [x] Awaiting userAccreditation Requests");
-        channel.consume(queue, msg => {
-            const requestCorrelationId = msg.content.toString();
+        channel.consume(queueAccreditation, msg => {
+            console.log("savage-server: Got msg from upload-server: " + msg.content);
 
-            console.log("savage-server: Request find UserAccreditation by correlationId:", requestCorrelationId);
+            const inputMessage = JSON.parse(msg.content);
+            const correlationId = inputMessage.correlationId;
+            const token = inputMessage.token;
+            const method = inputMessage.method;
+            const body = inputMessage.body;
 
-            userAccreditationService.findUserByCorrelationId(requestCorrelationId).then(function (result) {
-                console.log("savage-server: Result find UserAccreditation by correlationId", result);
+            if (method === 'get') {
+                userAccreditationService.findUserByCorrelationId(correlationId, token).then(function (result) {
+                    console.log(" [x] savage-server: Result find UserAccreditation by correlationId and token", result);
 
-                channel.sendToQueue(msg.properties.replyTo,
-                    Buffer.from(JSON.stringify(result)));
-            });
-            console.log("savage-server: Send response to:", msg.properties.replyTo);
+                    channel.sendToQueue(msg.properties.replyTo,
+                        Buffer.from(JSON.stringify(result)));
+                });
+            } else if (method === 'update') {
+                userAccreditationService.findUserByCorrelationIdAndUpdate(correlationId, body).then(function (result) {
+                    console.log(" [x] savage-server: Result find UserAccreditation by correlationId and update", result);
+
+                    channel.sendToQueue(msg.properties.replyTo,
+                        Buffer.from(JSON.stringify(result)));
+                });
+            }
+
+            console.log(" [x] savage-server: Send response to:", msg.properties.replyTo);
 
             channel.ack(msg);
         })

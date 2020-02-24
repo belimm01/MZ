@@ -1,103 +1,46 @@
 <template>
     <div id="app">
-        <Header/>
-        <div class="container">
-            <div v-if="!isIncorrectAPI">
-                <div class="row">
-                    <div class="col-sm">
-                        <h1>Elektronická podatelna MZČR</h1>
-                    </div>
-                </div>
-                <form @submit.prevent="uploadFile">
-                    <div v-for="form in forms">
-                        <br>
-                        <div class="row">
-                            <div class="col-sm">
-                                <h3>{{form.groupName}}</h3>
-                            </div>
-                        </div>
-                        <div v-for="(item,index) in form.items">
-                            <div v-for="(upload) in item.uploads">
-                                <Upload v-bind:key="upload"
-                                        :rel="item.label"
-                                        :multiple="item.multiple"
-                                        :label="item.label"
-                                        :maxSize="item.maxSize"
-                                        :description="item.description"
-                                        :required="item.required"
-                                        :acceptFormats="item.acceptFormats"
-                                        :tags="item.tags"
-                                        @getFileContent="getFileFromChildComponent"
-                                />
-                            </div>
-                            <div class="text-right" v-bind:style="{display: multiple}">
-                                <a href="javascript:void(0);"
-                                   v-on:click="addChildInput(index)">
-                                    pridat dalsi
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
+        <MyLayout>
+            <div class="container">
+                <div v-if="!isIncorrectAPI">
                     <div class="row">
                         <div class="col-sm">
-                            <b-button type="submit" variant="primary">Save</b-button>
+                            <h1 class="text-center">Elektronická podatelna MZČR</h1>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div v-else>
-                <div class="d-flex justify-content-center align-items-center" style="height:100px;">
-                    <h1>400 Bad Request</h1>
+                    <UploadFormsList :forms="forms"/>
                 </div>
-            </div>
-        </div>
-        <div class="modal-dialog-centered">
-            <b-modal v-model="showModal">
-                <div v-if="showSpinner" class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
+                <div v-else>
+                    <div class="d-flex justify-content-center align-items-center" style="height:100px;">
+                        <h1>400 Bad Request</h1>
                     </div>
                 </div>
-                <div v-if="showModalContent">Dekujeme za vyuzivani nasiho portalu !</div>
-            </b-modal>
-        </div>
+            </div>
+        </MyLayout>
     </div>
 </template>
 
 
 <script>
-    import Upload from './components/Upload.vue'
-    import Header from "./components/TheHeader"
-    import Button from 'bootstrap-vue/es/components/button/button';
-    import axios from 'axios'
-    import Modal from 'bootstrap-vue/es/components/modal/modal'
-    import {validateJson} from './rules/ValidationRule'
-    import {isFolderNotExist, createFolder, uploadFiles, login} from './owncloud/owncloudService'
+    import MyLayout from "./components/MyLayout"
+    import Api from "./Api";
+    import {checkUrl} from "./services/urlService";
+    import {login} from "./services/owncloudService";
+    import {parseJson} from "./services/validateUserAccreditation";
+    import UploadFormsList from "./components/UploadFormsList";
 
     export default {
         data() {
             return {
-                info: {
-                    requestId: null,
-                    timestamp: null,
-                    fee: null,
-                    folderName: null
-                },
+                info: {},
                 forms: [],
-                files: [],
-                showModalContent: false,
-                showModal: false,
-                showSpinner: false,
-                isIncorrectAPI: true
+                isIncorrectAPI: true,
             }
         },
         name: 'app',
         components: {
-            Header,
-            Upload,
-            'b-button': Button,
-            'b-modal': Modal
+            'UploadFormsList': UploadFormsList,
+            'MyLayout': MyLayout,
         },
         created() {
             this.login();
@@ -110,79 +53,16 @@
         methods: {
             async login() {
                 const url = new URL(location.href);
-                const token = url.searchParams.get("token");
-                const email = url.searchParams.get("email");
-                if ((token !== "undefined" && email !== "undefined") && (token !== null && email !== null)) {
-                    if (token.length > 0 && email.length > 0) {
-                        const res = await axios.get("http://localhost:3000/userAccreditaion/?email=" + email + "&token=" + token);
-                        this.isIncorrectAPI = false;
-                        this.$store.commit("changeInputJson", res.data);
-                        this.$store.commit("changeInputJsonInfo", res.data.info);
-                        await login();
-                        this.parseJson(res.data[0]);
-                    } else {
-                        console.log("incorrect url, please provide url with example: http://localhost:3000/accreditation/?token=blabalbala");
-                    }
-                } else {
-                    console.log("incorrect url, please provide url with example: http://localhost:3000/accreditation/?token=blabalbala");
+                const self = this;
+                if (await checkUrl(self, url)) {
+                    const res = await Api.getUserInfoByCorrelationIdAndToken(self.$store.getters.correlationId, self.$store.getters.token);
+                    self.isIncorrectAPI = false;
+                    self.$store.commit("changeInputJson", res.data);
+                    self.$store.commit("changeInputJsonInfo", res.data.info);
+                    await login();
+                    self.forms = await parseJson(res.data);
                 }
             },
-
-            parseJson(data) {
-                let formsArray = [];
-                for (let i = 0; i < data.form.length; i++) {
-                    let form = [];
-                    let items = [];
-                    for (let z = 0; z < data.form[i].items.length; z++) {
-                        const item = validateJson(data.form[i].items[z]);
-                        item.uploads = [];
-                        item.uploads.push({});
-                        items.push(item);
-                    }
-                    form.groupName = data.form[i].groupName;
-                    form.items = items;
-                    formsArray.push(form);
-                }
-                this.forms = formsArray;
-            },
-
-            async uploadFile() {
-                this.showModal = true;
-                this.showSpinner = true;
-
-                const fileUploadList = this.files;
-                let folderName = "Documents/" + this.$store.getters.info.folderName + Date.now() + "/";
-                if (await isFolderNotExist(this.$store.getters.info.folderName)) {
-                    await createFolder(folderName);
-                }
-                if (fileUploadList !== undefined && fileUploadList !== null && fileUploadList.length > 0) {
-                    await uploadFiles(folderName, fileUploadList);
-                    this.showSpinner = false;
-                    this.showModalContent = true;
-                }
-            },
-
-            getFileFromChildComponent(value) {
-                this.files.push(value);
-            },
-
-            addChildInput(index) {
-                for (let i = 0; i < this.forms.length; i++) {
-                    this.forms[i].items[index].uploads.push({});
-                }
-                this.$forceUpdate();
-            }
         }
     }
 </script>
-
-<style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
-</style>

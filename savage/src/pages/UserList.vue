@@ -1,22 +1,32 @@
 <template>
     <MyLayout id="userList">
         <b-card>
-            <ul id="list-user" class="list-group">
-                <li class="list-group-item"
-                    v-for="currentUser in userList"
-                    v-bind:key="currentUser.correlationId">
+            <b-list-group id="list-user"
+                          :per-page="perPage"
+                          :current-page="currentPage">
+                <b-list-group-item v-for="currentUser in userList"
+                                   v-bind:key="currentUser.correlationId">
                     {{ currentUser.info[0].name }}
                     <div class="float-right">
-                        <ActionButton :currentUser="currentUser" :isHidden="true"/>
+                        <ActionButton :key="currentUser.correlationId"
+                                      :currentUser="currentUser"
+                                      :isHidden="true"/>
                     </div>
-                </li>
-            </ul>
+                </b-list-group-item>
+            </b-list-group>
         </b-card>
+        <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="list-user"
+                align="center"
+        ></b-pagination>
     </MyLayout>
 </template>
 
 <script>
-    import {BCard} from "bootstrap-vue/esm";
+    import {BCard, BPagination, BListGroup, BListGroupItem} from "bootstrap-vue/esm";
     import ActionButton from "../components/ActionButton";
     import Api from "../Api";
 
@@ -25,15 +35,22 @@
         data() {
             return {
                 userList: null,
+                perPage: 5,
+                currentPage: 1,
+                rows: null
             }
         },
         components: {
             ActionButton,
+            'b-list-group-item': BListGroupItem,
+            'b-list-group': BListGroup,
             'b-card': BCard,
+            'b-pagination': BPagination
         },
-       async mounted() {
+        async mounted() {
             const resUserList = await Api.getAllUsers();
             this.userList = resUserList.data;
+            this.rows = resUserList.length
         },
     }
 </script>

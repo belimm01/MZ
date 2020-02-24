@@ -11,19 +11,22 @@ const createClient = () => amqp.connect('amqp://localhost')
         channel.responseEmitter = new EventEmitter();
         channel.responseEmitter.setMaxListeners(0);
         channel.consume(REPLY_QUEUE,
-            msg => channel.responseEmitter.emit(msg.properties.correlationId, msg.content),
+            msg => channel.responseEmitter.emit("userAccreditation", msg.content),
             {noAck: true});
 
         return channel;
     });
 
-const sendUserAccreditationMessage = (channel, message, userAccreditationQueue) => new Promise(resolve => {
-    // unique random string
-    const correlationId = message.correlationId;
-    channel.responseEmitter.once(correlationId, resolve);
-    console.log('sending msg to queue ', userAccreditationQueue);
-    channel.sendToQueue(userAccreditationQueue, Buffer.from(message), {correlationId, replyTo: REPLY_QUEUE});
-    console.log(" [x] Sent %s", message);
+const sendUserAccreditationMessage = (channel, req, method, userAccreditationQueue) => new Promise(resolve => {
+    let message = {};
+    message.correlationId = req.params.correlationId;
+    message.token = req.params.token;
+    message.method = method;
+    message.body = req.body;
+
+    channel.responseEmitter.once("userAccreditation", resolve);
+    channel.sendToQueue(userAccreditationQueue, Buffer.from(JSON.stringify(message)), {message, replyTo: REPLY_QUEUE});
+    console.log(" [x] Sent sendUserAccreditationMessage %s", JSON.stringify(message));
 });
 
 module.exports.createClient = createClient;

@@ -5,7 +5,7 @@ const userAccreditationSchema = mongoose.Schema({
     correlationId: String,
     info: [],
     form: [],
-    state: []
+    state: {},
 });
 
 let UserAccreditation = mongoose.model('Accreditation', userAccreditationSchema);

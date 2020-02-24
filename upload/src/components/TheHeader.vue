@@ -1,26 +1,16 @@
 <template>
-    <div>
-        <!-- Image and text -->
-        <b-navbar variant="faded" type="light">
-            <b-navbar-brand href="#">
-                <img alt="Logo" class="d-inline-block align-top" src="~@/assets/logo-mz.svg">
-            </b-navbar-brand>
-        </b-navbar>
+    <div class="clearfix">
+        <b-img alt="Logo" src="../assets/logo-mz.svg"></b-img>
     </div>
 </template>
 
 <script>
-    import Navbar from 'bootstrap-vue/es/components/navbar/navbar';
-    import NavbarBrand from 'bootstrap-vue/es/components/navbar/navbar-brand';
+    import {BImg} from "bootstrap-vue/esm";
 
     export default {
         name: "Header",
         components: {
-            'b-navbar': Navbar,
-            'b-navbar-brand': NavbarBrand
+            'b-img' : BImg,
         }
     }
 </script>
-
-<style scoped>
-</style>

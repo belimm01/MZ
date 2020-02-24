@@ -9,6 +9,8 @@ const store = new Vuex.Store({
         fileName: '',
         jsonContent: '',
         info: '',
+        token: '',
+        correlationId: '',
     },
     mutations: {
         changeFileContent(ctx, fileContent) {
@@ -22,6 +24,12 @@ const store = new Vuex.Store({
         },
         changeInputJsonInfo(ctx, info) {
             ctx.info = info
+        },
+        changeToken(ctx, token) {
+            ctx.token = token
+        },
+        changeCorrelationId(ctx, correlationId) {
+            ctx.correlationId = correlationId
         }
     },
     getters: {
@@ -29,6 +37,8 @@ const store = new Vuex.Store({
         fileName: state => state.fileName,
         jsonContent: state => state.jsonContent,
         info: state => state.info,
+        token: state => state.token,
+        correlationId: state => state.correlationId,
     }
 });
 

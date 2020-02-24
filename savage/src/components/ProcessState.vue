@@ -2,25 +2,23 @@
     <div>
         <b-button v-b-toggle.collapse-1 variant="primary">Show process</b-button>
         <b-collapse id="collapse-1" class="mt-2">
-            <b-card v-for="(stateValue, stateName) in  currentUser.state[0]" :value="stateValue" :key="stateName">
+            <b-card v-for="(stateValue, stateName) in  currentUser.state" :value="stateValue" :key="stateName">
                 <p class="d-flex justify-content-between align-items-center card-text h4 mb-2">
                     {{stateName}}
                     <BIconCheckBox class="rounded" v-if="stateValue" variant="success" right></BIconCheckBox>
                     <BIconXCircle class="rounded" v-if="!stateValue" variant="danger" style></BIconXCircle>
                 </p>
-                <div v-if="stateName==='upload'">
+                <div v-if="stateName==='upload' && stateValue">
                     <b-button v-b-toggle="'accordion-' + stateName" size="sm" variant="info">Show details</b-button>
                     <b-collapse :id="'accordion-'+ stateName" class="mt-2">
-                        <div v-for="(formValue, formName) in  currentUser.form"
-                             :value="formValue"
-                             :key="formName">
+                        <div v-for="upload in  currentUser.upload"
+                             :key="upload">
                             <b-card>
                                 <b-card-text>
-                                    <p><b>{{formValue.groupName}}</b></p>
-                                    <p v-for="(formDetailValue, formDetailName) in formValue.items"
-                                       :value="formDetailValue"
-                                       :key="formDetailName">
-                                        {{formDetailValue.id}}
+                                    <p><b>Uploaded date: {{formattedDate(upload.uploadedDate)}}</b></p>
+                                    <p v-for="uploadFiles in upload.uploadedFiles"
+                                       :key="uploadFiles">
+                                        Uploaded file: {{uploadFiles}}
                                     </p>
                                 </b-card-text>
                             </b-card>
@@ -49,14 +47,11 @@
         },
         directives: {
             'b-toggle': VBToggle,
+        },
+        methods: {
+            formattedDate(timestamp) {
+                return new Date(timestamp);
+            }
         }
     }
 </script>
-
-<style scoped>
-    .divider {
-        width: 5px;
-        height: auto;
-        display: inline-block;
-    }
-</style>
