@@ -3,7 +3,7 @@
         <form @submit.prevent="uploadFileToOwncloud">
             <b-card>
                 <b-card>
-                    <UploadForm label="Editional files"
+                    <UploadForm label="Další soubory"
                                 :multiple="true"
                                 :required="false"
                                 @getFileContent="getFileFromChildComponent"
@@ -31,7 +31,7 @@
                 <br>
                 <div class="row">
                     <div class="col-sm">
-                        <b-button type="submit" variant="info">Save</b-button>
+                        <b-button type="submit" variant="info">Uložit</b-button>
                     </div>
                 </div>
             </b-card>

@@ -6,6 +6,7 @@ const userAccreditationSchema = mongoose.Schema({
     info: [],
     form: [],
     state: {},
+    upload: {}
 });
 
 let UserAccreditation = mongoose.model('Accreditation', userAccreditationSchema);

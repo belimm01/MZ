@@ -20,12 +20,13 @@
 </template>
 
 <script>
-    import {BNavbar, BNavbarBrand} from "bootstrap-vue/esm";
+    import {BNavbar, BNavbarBrand, BNavbarNav} from "bootstrap-vue/esm";
 
     export default {
         components: {
             'b-navbar': BNavbar,
-            'b-navbar-brand': BNavbarBrand
+            'b-navbar-brand': BNavbarBrand,
+            'b-navbar-nav': BNavbarNav
         },
     }
 </script>

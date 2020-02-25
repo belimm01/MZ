@@ -8,7 +8,7 @@
                     </b-card-text>
                     <b-form @submit="onSubmit" v-if="true">
                         <b-container fluid>
-                            <div v-for="(value, name) in currentUser.state[0]" :value="value" :key="name">
+                            <div v-for="(value, name) in currentUser.state" :value="value" :key="name">
                                 <b-row class="my-1">
                                     <b-col sm="2">
                                         <label><b>{{name}}:</b></label>

@@ -11,18 +11,17 @@
                 <div v-if="stateName==='upload' && stateValue">
                     <b-button v-b-toggle="'accordion-' + stateName" size="sm" variant="info">Show details</b-button>
                     <b-collapse :id="'accordion-'+ stateName" class="mt-2">
-                        <div v-for="upload in  currentUser.upload"
-                             :key="upload">
-                            <b-card>
-                                <b-card-text>
-                                    <p><b>Uploaded date: {{formattedDate(upload.uploadedDate)}}</b></p>
-                                    <p v-for="uploadFiles in upload.uploadedFiles"
-                                       :key="uploadFiles">
-                                        Uploaded file: {{uploadFiles}}
-                                    </p>
-                                </b-card-text>
-                            </b-card>
-                        </div>
+                        <b-card>
+                            <b-card-text>
+                                <p><b>Uploaded date:</b></p>
+                                <p>{{formattedDate(currentUser.upload.uploadedDate)}}</p>
+                                <p><b>Uploaded file:</b></p>
+                                <p v-for="uploadFile in currentUser.upload.uploadedFiles"
+                                   :key="uploadFile">
+                                    {{uploadFile}}
+                                </p>
+                            </b-card-text>
+                        </b-card>
                     </b-collapse>
                 </div>
             </b-card>
@@ -50,6 +49,8 @@
         },
         methods: {
             formattedDate(timestamp) {
+                console.log(timestamp)
+                console.log(new Date(timestamp))
                 return new Date(timestamp);
             }
         }

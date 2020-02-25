@@ -6,6 +6,7 @@
             </div>
             <div class="col-4">
                 <input value="value"
+                       aria-label="Vyberte soubor"
                        :required="required"
                        :multiple="multiple"
                        type="file"
