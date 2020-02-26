@@ -2,13 +2,6 @@
     <div>
         <form @submit.prevent="uploadFileToOwncloud">
             <b-card>
-                <b-card>
-                    <UploadForm label="Další soubory"
-                                :multiple="true"
-                                :required="false"
-                                @getFileContent="getFileFromChildComponent"
-                    />
-                </b-card>
                 <div v-for="form in forms" :key="form.id">
                     <b-card>
                         <br>
@@ -28,6 +21,13 @@
                         </div>
                     </b-card>
                 </div>
+                <b-card>
+                    <UploadForm label="Další soubory"
+                                :multiple="true"
+                                :required="false"
+                                @getFileContent="getFileFromChildComponent"
+                    />
+                </b-card>
                 <br>
                 <div class="row">
                     <div class="col-sm">
@@ -76,7 +76,7 @@
                 if (await isFolderNotExist(this.$store.getters.info[0].folderName)) {
                     await createFolder(folderName);
                 }
-                if (fileUploadList !== undefined && fileUploadList !== null && fileUploadList.length > 0) {
+                if (fileUploadList.length > 0) {
                     await uploadFiles(folderName, fileUploadList);
                     this.$store.commit("changeInputJson", updateUserAccreditationWithUploadState(this.$store.getters.jsonContent, fileUploadList));
                     console.log(this.$store.getters.jsonContent);

@@ -8,10 +8,11 @@ function updateUserAccreditationWithUploadState(oldJsonContent, fileUploadList) 
 }
 
 let createFilesArray = (newJsonContent, fileUploadList) => {
-    newJsonContent.upload.uploadedFiles = [];
+    let uploadedFiles = [];
     for (let i = 0; i < fileUploadList.length; i++) {
-        newJsonContent.upload.uploadedFiles[i] = fileUploadList[i].fileName;
+        uploadedFiles[i] = fileUploadList[i].fileName;
     }
+    newJsonContent.upload.uploadedFiles.push([...new Set(uploadedFiles)]);
     return newJsonContent;
 };
 
