@@ -21,7 +21,7 @@
   1. In project open server folder and run this command: `node producer.js`
   2. In project open client folder and run this command: `npm i` then `npm run serve`
 3. Open postman and create POST request to `localhost:3000/accreditation` with sample json in the project *"client/src/assets/fake_data/akreditace-struktura.json"*
-4. Navigate to `http://localhost:8080/?correlationId=2d776c18-bf29-438e-affd-73cc13d29c36&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` with email and token params and check the app. You can check result in localhost:80 in Document folder :) 
+4. Navigate to `http://localhost:8080/?correlationId=9a342d6f-8251-4385-a4e4-65d359759445&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` with email and token params and check the app. You can check result in localhost:80 in Document folder :) 
 
 **Init internal network**
 `docker network create internal_mz`
