@@ -16,7 +16,7 @@
                                 <p><b>Uploaded date:</b></p>
                                 <p>{{formattedDate(currentUser.upload.uploadedDate)}}</p>
                                 <p><b>Uploaded file:</b></p>
-                                <p v-for="uploadFile in currentUser.upload.uploadedFiles[0]"
+                                <p v-for="uploadFile in currentUser.upload.uploadedFiles"
                                    :key="uploadFile">
                                     {{uploadFile}}
                                 </p>
