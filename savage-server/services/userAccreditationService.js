@@ -1,5 +1,14 @@
 const uuid = require("uuid/v4");
 const userAccreditation = require("../models/userAccreditation");
+const DB_URL = 'mongodb://admin:adminadmin1@ds149676.mlab.com:49676/mz';
+const mongoose = require('../config/mongodb/mongoConfig');
+
+process.env.MONGODB = DB_URL;
+mongoose.connect(process.env.MONGODB, {useNewUrlParser: true});
+mongoose.connection.on('error', function () {
+    console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
+    process.exit(1);
+});
 
 module.exports = {
     findUserByCorrelationIdAndUpdate: function (correlationId, body) {
